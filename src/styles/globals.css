@@ -56,9 +56,24 @@ button {
   gap: 13px;
 }
 
-.brand-mark {
+.brand-mark-frame {
   width: 48px;
   height: 48px;
+  flex: 0 0 48px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 13px;
+  background: #f7c65c;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.16),
+    0 10px 24px rgba(0, 0, 0, 0.18);
+}
+
+.brand-mark {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .brand-lockup h1,

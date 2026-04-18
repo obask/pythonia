@@ -1,4 +1,3 @@
-import { createFileRoute } from '@tanstack/react-router'
 import { indentWithTab } from '@codemirror/commands'
 import { python } from '@codemirror/lang-python'
 import { indentUnit } from '@codemirror/language'
@@ -8,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react'
 import CodeMirror from '@uiw/react-codemirror'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { platformApi } from '@/lib/platform-api'
 import type { Components } from 'react-markdown'
 import type {
   Lesson,
@@ -15,10 +15,6 @@ import type {
   QuizQuestion,
   RunResponse,
 } from '@/types/lesson'
-
-export const Route = createFileRoute('/')({
-  component: PythoniaApp,
-})
 
 const pythoniaEditorTheme = EditorView.theme(
   {
@@ -206,7 +202,7 @@ function groupLessonsByModule(
     .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title))
 }
 
-function PythoniaApp() {
+export default function PythoniaApp() {
   const [lessons, setLessons] = useState<LessonSummary[]>([])
   const [activeSlug, setActiveSlug] = useState('')
   const [lesson, setLesson] = useState<Lesson | null>(null)
@@ -220,8 +216,7 @@ function PythoniaApp() {
 
   useEffect(() => {
     async function loadLessons() {
-      const response = await fetch('/api/lessons')
-      const data = (await response.json()) as LessonSummary[]
+      const data = await platformApi.listLessons()
       setLessons(data)
       setActiveSlug((current) => {
         if (current) return current
@@ -245,13 +240,9 @@ function PythoniaApp() {
       setRunResponse(null)
       setQuizAnswers({})
       setQuizChecked(false)
-      const response = await fetch(`/api/lessons/${activeSlug}`)
+      const data = await platformApi.getLesson(activeSlug)
+      if (!data) throw new Error('Урок не найден')
 
-      if (!response.ok) {
-        throw new Error('Урок не найден')
-      }
-
-      const data = (await response.json()) as Lesson
       const savedProgress = readStoredProgress()
       setLesson(data)
       setStoredProgress(savedProgress)
@@ -380,12 +371,7 @@ function PythoniaApp() {
     setRunResponse(null)
 
     try {
-      const response = await fetch('/api/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ slug: lesson.slug, code }),
-      })
-      const data = (await response.json()) as RunResponse
+      const data = await platformApi.runCode({ slug: lesson.slug, code })
       setRunResponse(data)
     } catch {
       setRunResponse({
@@ -420,7 +406,9 @@ function PythoniaApp() {
     <main className="app-shell">
       <aside className="lesson-rail" aria-label="Уроки">
         <div className="brand-lockup">
-          <img src="/pythonia-mark.svg" alt="" className="brand-mark" />
+          <span className="brand-mark-frame" aria-hidden="true">
+            <img src="/pythonia-mark.svg" alt="" className="brand-mark" />
+          </span>
           <div>
             <p className="eyebrow">Pythonia</p>
             <h1>Практика Python</h1>
