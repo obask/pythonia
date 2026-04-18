@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import LessonSidebar from '../components/LessonSidebar.astro';
+import { completedSlugs } from '../lib/progress.ts';
+
+const lessons = (await getCollection('lessons')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+const done = completedSlugs();
+---
+<Base title="Lessons">
+  <div class="learning-shell">
+    <LessonSidebar lessons={lessons} done={done} />
+    <section class="content-pane">
+      <h1>Pythia</h1>
+      <p class="prose">
+        Read a short lesson, fill in the Python blanks, then run visible tests or submit all tests.
+      </p>
+      <p class="prose">
+        Choose a lesson from the sidebar.
+      </p>
+    </section>
+  </div>
+</Base>

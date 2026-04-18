@@ -1,0 +1,13 @@
+---
+import type { ExecuteResponse } from '../lib/executor-client.ts';
+import { renderEmptyResult, renderResult } from '../lib/render-result.ts';
+
+interface Props {
+  response: ExecuteResponse | null;
+  mode?: 'run' | 'submit';
+}
+
+const { response, mode = 'submit' } = Astro.props;
+const html = response === null ? renderEmptyResult() : renderResult(response, mode);
+---
+<Fragment set:html={html} />

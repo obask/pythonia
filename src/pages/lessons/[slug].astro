@@ -1,0 +1,130 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import CodeEditor from '../../components/CodeEditor.astro';
+import LessonSidebar from '../../components/LessonSidebar.astro';
+import TestResult from '../../components/TestResult.astro';
+import { parseLesson } from '../../lib/lesson.ts';
+import { completedSlugs } from '../../lib/progress.ts';
+
+const { slug } = Astro.params;
+if (!slug) return Astro.redirect('/');
+
+const entry = await getEntry('lessons', slug);
+if (!entry) return new Response('Lesson not found', { status: 404 });
+
+const lesson = parseLesson(entry.body ?? '');
+
+const all = (await getCollection('lessons')).sort((a, b) => a.data.order - b.data.order);
+const idx = all.findIndex((l) => l.id === entry.id);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx < all.length - 1 ? all[idx + 1] : null;
+const done = completedSlugs();
+const completed = done.has(entry.id);
+
+const formId = `ex-form-${entry.id.replace(/[^a-z0-9]/gi, '-')}`;
+---
+<Base title={entry.data.title}>
+  <div class="learning-shell">
+    <LessonSidebar lessons={all} done={done} current={entry.id} />
+    <article class="content-pane lesson-view">
+      <header class="lesson-header">
+        <h1>{entry.data.title} {completed && <span class="check" title="Completed">✓</span>}</h1>
+        <div class="meta">
+          Lesson {entry.data.order} · {entry.data.difficulty} · function <code>{entry.data.function_name}()</code>
+        </div>
+      </header>
+
+      <div class="lesson-workspace">
+        <div class="lesson-reading">
+          <section class="prose lesson-theory" set:html={lesson.theoryHtml}></section>
+
+          <section class="exercise-brief">
+            <h2>Exercise</h2>
+            <div class="prose" set:html={lesson.exerciseDescriptionHtml}></div>
+          </section>
+        </div>
+
+        <section class="practice-pane" aria-label="Code workspace">
+          <div class="practice-header">
+            <div>
+              <span class="eyebrow">Python</span>
+              <h2>Editor</h2>
+            </div>
+            <code>{entry.data.function_name}()</code>
+          </div>
+
+          <form id={formId}>
+            <CodeEditor template={lesson.codeTemplate} formId={formId} />
+            <input type="hidden" name="blanks" value="[]" />
+          </form>
+
+          <div class="actions">
+            <button
+              class="btn"
+              type="button"
+              hx-post={`/api/run/${entry.id}`}
+              hx-include={`#${formId}`}
+              hx-target="#result"
+              hx-swap="innerHTML"
+              hx-indicator="#indicator"
+            >Run</button>
+            <button
+              class="btn primary"
+              type="button"
+              hx-post={`/api/submit/${entry.id}`}
+              hx-include={`#${formId}`}
+              hx-target="#result"
+              hx-swap="innerHTML"
+              hx-indicator="#indicator"
+            >Submit</button>
+            {lesson.hintHtml && (
+              <button class="hint-toggle" type="button" onclick="document.getElementById('hint').classList.toggle('show')">Hint</button>
+            )}
+          </div>
+
+          <span id="indicator" class="htmx-indicator">The oracle considers your answer…</span>
+
+          {lesson.hintHtml && (
+            <div id="hint" class="hint prose" set:html={lesson.hintHtml}></div>
+          )}
+
+          <div id="result" class="result">
+            <TestResult response={null} />
+          </div>
+        </section>
+      </div>
+
+      <nav class="lesson-nav">
+        <div>
+          {prev && (
+            <a
+              href={`/lessons/${prev.id}`}
+              hx-get={`/lessons/${prev.id}`}
+              hx-select=".learning-shell"
+              hx-target="main"
+              hx-swap="innerHTML"
+              hx-push-url="true"
+            >
+              ← {prev.data.title}
+            </a>
+          )}
+        </div>
+        <div>
+          {next && (
+            <a
+              href={`/lessons/${next.id}`}
+              hx-get={`/lessons/${next.id}`}
+              hx-select=".learning-shell"
+              hx-target="main"
+              hx-swap="innerHTML"
+              hx-push-url="true"
+            >
+              {next.data.title} →
+            </a>
+          )}
+        </div>
+      </nav>
+    </article>
+  </div>
+</Base>

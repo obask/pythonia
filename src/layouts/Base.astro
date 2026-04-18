@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+}
+const { title } = Astro.props;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · Pythia</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="https://unpkg.com/htmx.org@2.0.3" defer></script>
+    <script>
+      import '../scripts/code-editor.ts';
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a href="/" class="brand">
+        <span class="brand-mark">◉</span>
+        <span class="brand-name">Pythia</span>
+      </a>
+      <span class="brand-tag">the oracle of Python</span>
+    </header>
+    <main>
+      <slot />
+    </main>
+  </body>
+</html>

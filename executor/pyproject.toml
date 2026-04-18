@@ -1,0 +1,30 @@
+[project]
+name = "pythia-executor"
+version = "0.1.0"
+description = "Sandboxed Python code runner for Pythia lessons"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+]
+
+[project.scripts]
+pythia-executor = "pythia_executor.main:run"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pythia_executor"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_classes = ["Test*Suite"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "httpx>=0.27",
+]

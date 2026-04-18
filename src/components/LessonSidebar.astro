@@ -1,0 +1,42 @@
+---
+interface LessonEntry {
+  id: string;
+  data: {
+    title: string;
+    difficulty: string;
+    order: number;
+  };
+}
+
+interface Props {
+  lessons: LessonEntry[];
+  done: Set<string>;
+  current?: string;
+}
+
+const { lessons, done, current } = Astro.props;
+---
+<aside class="lesson-sidebar" aria-label="Lessons">
+  <div class="sidebar-title">Lessons</div>
+  <nav class="sidebar-nav">
+    {lessons.map((lesson) => (
+      <a
+        class={`sidebar-lesson${current === lesson.id ? ' active' : ''}`}
+        href={`/lessons/${lesson.id}`}
+        hx-get={`/lessons/${lesson.id}`}
+        hx-select=".learning-shell"
+        hx-target="main"
+        hx-swap="innerHTML"
+        hx-push-url="true"
+        aria-current={current === lesson.id ? 'page' : undefined}
+      >
+        <span class="sidebar-order">{lesson.data.order}</span>
+        <span class="sidebar-copy">
+          <span class="sidebar-name">{lesson.data.title}</span>
+          <span class="sidebar-meta">{lesson.data.difficulty}</span>
+        </span>
+        {done.has(lesson.id) && <span class="sidebar-check" title="Completed">✓</span>}
+      </a>
+    ))}
+  </nav>
+</aside>

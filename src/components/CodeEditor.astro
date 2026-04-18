@@ -1,0 +1,22 @@
+---
+import { tokenizeTemplate } from '../lib/lesson.ts';
+
+interface Props {
+  template: string;
+  formId: string;
+}
+
+const { template, formId } = Astro.props;
+const spans = tokenizeTemplate(template);
+const blankCount = spans.filter((s) => s.kind === 'blank').length;
+const initialBlanks = Array.from({ length: blankCount }, () => '');
+const serialized = JSON.stringify({ template, blanks: initialBlanks });
+---
+<div
+  class="editor-shell"
+  data-code-editor
+  data-initial={serialized}
+  data-form={formId}
+>
+  <div class="editor-mount"></div>
+</div>
