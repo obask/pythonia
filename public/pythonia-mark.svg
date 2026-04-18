@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" role="img" aria-label="Pythonia mark">
+  <rect width="96" height="96" rx="18" fill="#f7c65c"/>
+  <path fill="#17202a" d="M24 28c0-8 6-14 14-14h19c8 0 14 6 14 14v13H45c-7 0-13 6-13 13v5h-8V28Zm16-4a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/>
+  <path fill="#1c5d54" d="M72 68c0 8-6 14-14 14H39c-8 0-14-6-14-14V55h26c7 0 13-6 13-13v-5h8v31ZM56 72a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z"/>
+</svg>
