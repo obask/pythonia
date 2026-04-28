@@ -1,0 +1,15 @@
+# Hide generated lockfile noise from diffs.
+pnpm-lock.yaml -diff linguist-generated=true
+**/pnpm-lock.yaml -diff linguist-generated=true
+package-lock.json -diff linguist-generated=true
+**/package-lock.json -diff linguist-generated=true
+npm-shrinkwrap.json -diff linguist-generated=true
+**/npm-shrinkwrap.json -diff linguist-generated=true
+yarn.lock -diff linguist-generated=true
+**/yarn.lock -diff linguist-generated=true
+bun.lock -diff linguist-generated=true
+**/bun.lock -diff linguist-generated=true
+bun.lockb -diff linguist-generated=true
+**/bun.lockb -diff linguist-generated=true
+uv.lock -diff linguist-generated=true
+**/uv.lock -diff linguist-generated=true
