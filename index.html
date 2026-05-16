@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/highlight.js@11.10.0/styles/atom-one-dark.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pythonia</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+  <body>
+    <div id="app">
+      <aside id="sidebar">
+        <header class="sidebar-header">
+          <h1>Pythonia</h1>
+          <div id="vault-path" class="vault-path" title=""></div>
+          <button id="reload-btn" class="btn-ghost" type="button">Reload</button>
+        </header>
+        <nav id="lesson-list"></nav>
+      </aside>
+      <main id="main">
+        <div id="tabs" class="tabs" hidden>
+          <button class="tab active" data-tab="read">Read</button>
+          <button class="tab" data-tab="quiz">Quiz</button>
+          <button class="tab" data-tab="run">Run code</button>
+        </div>
+        <section id="panel-read" class="panel"></section>
+        <section id="panel-quiz" class="panel" hidden></section>
+        <section id="panel-run" class="panel" hidden>
+          <div class="run-header">
+            <div id="py-status" class="py-status">Python: loading…</div>
+            <button id="run-btn" class="btn" type="button" disabled>Run ▶</button>
+            <button id="reset-btn" class="btn-ghost" type="button">Reset</button>
+          </div>
+          <textarea id="code-editor" spellcheck="false"
+            placeholder="Waiting for Python runtime…"></textarea>
+          <pre id="code-output" class="code-output"></pre>
+        </section>
+        <div id="empty" class="empty">
+          <h2>Pick a lesson on the left</h2>
+          <p>Lessons are read from your markdown vault.</p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
