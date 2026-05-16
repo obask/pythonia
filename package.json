@@ -3,20 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "electrobun run",
-    "dev": "electrobun dev",
-    "dev:watch": "electrobun dev --watch",
-    "build:dev": "bun install && electrobun build",
+    "start": "bun run build:ui && electrobun dev",
+    "build:ui": "vite build",
+    "dev": "bun run build:ui && electrobun dev --watch",
+    "dev:hmr": "concurrently \"bun run hmr\" \"bun run start\"",
+    "dev:watch": "bun run build:ui && electrobun dev --watch",
+    "hmr": "vite --port 5173",
+    "build:dev": "bun install && bun run build:ui && electrobun build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "electrobun": "^1.16.0",
     "marked": "^17.0.1",
+    "solid-js": "^1.9.12",
     "yaml": "^2.8.2"
   },
   "devDependencies": {
     "@types/bun": "latest",
     "@types/three": "^0.184.0",
-    "typescript": "^5.9.3"
+    "concurrently": "^9.2.1",
+    "typescript": "^5.9.3",
+    "vite": "^8.0.8",
+    "vite-plugin-solid": "^2.11.12"
   }
 }

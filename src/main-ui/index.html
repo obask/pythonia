@@ -4,75 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pythonia</title>
-    <link rel="stylesheet" href="views://main-ui/styles.css" />
-    <script defer src="views://main-ui/index.js"></script>
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div class="brand">
-          <div class="brand-mark">Py</div>
-          <div>
-            <h1>Pythonia</h1>
-            <p>Python lessons</p>
-          </div>
-        </div>
-        <div class="progress-box">
-          <div>
-            <span class="muted">XP</span>
-            <strong id="xp-count">0</strong>
-          </div>
-          <div class="progress-track">
-            <div id="progress-fill"></div>
-          </div>
-          <span id="progress-label">0 из 0 уроков</span>
-        </div>
-        <nav id="lesson-nav" class="lesson-nav" aria-label="Lessons"></nav>
-      </aside>
-
-      <main class="workspace">
-        <section class="lesson-pane">
-          <div class="lesson-head">
-            <div>
-              <p id="lesson-module" class="eyebrow">Module</p>
-              <h2 id="lesson-title">Loading lessons...</h2>
-              <p id="lesson-description"></p>
-            </div>
-            <div class="lesson-meta">
-              <span id="lesson-level"></span>
-              <span id="lesson-duration"></span>
-              <span id="lesson-xp"></span>
-            </div>
-          </div>
-          <div id="objectives" class="objective-row"></div>
-          <article id="lesson-content" class="markdown"></article>
-        </section>
-
-        <section class="practice-pane">
-          <div class="tabs" role="tablist">
-            <button id="tab-code" class="tab active" type="button">Code</button>
-            <button id="tab-quiz" class="tab" type="button">Quiz</button>
-          </div>
-
-          <div id="code-panel" class="panel active">
-            <div class="challenge">
-              <p class="eyebrow">Challenge</p>
-              <h3 id="challenge-title">Write code</h3>
-              <p id="challenge-prompt"></p>
-            </div>
-            <textarea id="code-editor" spellcheck="false"></textarea>
-            <div class="actions">
-              <button id="reset-code" type="button" class="secondary">Reset</button>
-              <button id="run-code" type="button" class="primary">Run tests</button>
-            </div>
-            <div id="test-output" class="test-output"></div>
-          </div>
-
-          <div id="quiz-panel" class="panel">
-            <div id="quiz-list" class="quiz-list"></div>
-          </div>
-        </section>
-      </main>
-    </div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
   </body>
 </html>

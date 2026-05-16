@@ -1,4 +1,4 @@
-import { ApplicationMenu, BrowserView, BrowserWindow } from "electrobun/bun";
+import { ApplicationMenu, BrowserView, BrowserWindow, Updater } from "electrobun/bun";
 import {
   getCatalog,
   getLesson,
@@ -28,6 +28,25 @@ ApplicationMenu.setApplicationMenu([
   },
 ]);
 
+const DEV_SERVER_PORT = 5173;
+const DEV_SERVER_URL = `http://localhost:${DEV_SERVER_PORT}`;
+const MAIN_VIEW_URL = "views://main-ui/index.html";
+
+async function getMainViewUrl() {
+  const channel = await Updater.localInfo.channel();
+  if (channel === "dev") {
+    try {
+      await fetch(DEV_SERVER_URL, { method: "HEAD" });
+      console.log(`HMR enabled: using Vite dev server at ${DEV_SERVER_URL}`);
+      return DEV_SERVER_URL;
+    } catch {
+      console.log("Vite dev server not running. Run 'bun run dev:hmr' for HMR support.");
+    }
+  }
+
+  return MAIN_VIEW_URL;
+}
+
 const rpc = BrowserView.defineRPC<PythoniaRPC>({
   maxRequestTime: 8000,
   handlers: {
@@ -55,7 +74,7 @@ const rpc = BrowserView.defineRPC<PythoniaRPC>({
 
 new BrowserWindow({
   title: "Pythonia",
-  url: "views://main-ui/index.html",
+  url: await getMainViewUrl(),
   frame: {
     x: 80,
     y: 80,

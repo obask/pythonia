@@ -13,14 +13,10 @@ export default {
     bun: {
       entrypoint: "src/bun/index.ts",
     },
-    views: {
-      "main-ui": {
-        entrypoint: "src/main-ui/index.ts",
-      },
-    },
     copy: {
-      "src/main-ui/index.html": "views/main-ui/index.html",
-      "src/main-ui/styles.css": "views/main-ui/styles.css",
+      "dist/index.html": "views/main-ui/index.html",
+      "dist/assets": "views/main-ui/assets",
     },
+    watchIgnore: ["dist/**"],
   },
 } satisfies ElectrobunConfig;
