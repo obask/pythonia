@@ -1,0 +1,30 @@
+{
+  "name": "pythonia",
+  "version": "0.1.0",
+  "description": "Study Python and CS from a markdown lesson vault",
+  "main": "out/main/index.js",
+  "author": "Oleg",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.1.0",
+    "highlight.js": "^11.10.0"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "@types/node": "^22.5.4",
+    "electron": "^32.1.2",
+    "electron-vite": "^2.3.0",
+    "solid-js": "^1.9.0",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.7",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}
